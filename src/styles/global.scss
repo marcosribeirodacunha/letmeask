@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --danger: #e73f5d;
+  --purple: #835afd;
+  --pink: #e559f9;
+  --google: #ea4335;
+  
+  --black: #29292e;
+  
+  --gray-dark: #737380;
+  --gray-medium: #a8a8b3;
+  --gray-light: #dbdcdd;
+  
+  --white-background: #f8f8f8;
+  --white-details: #fefefe;
+  --white: #ffffff;
+
+  --font-roboto: 'Roboto', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+}
+
+body {
+  background: var(--white-background);
+  color: var(--black);
+}
+
+body, input, button, textarea {
+  font: 400 1rem var(--font-roboto);
+}
+
+button {
+  cursor: pointer;
+}
