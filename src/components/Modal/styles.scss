@@ -1,0 +1,36 @@
+.react-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 3rem;
+    height: 3rem;
+    
+    path {
+      stroke: var(--danger);
+    }
+  }
+
+  h2 {
+    margin: 1.5rem 0 0.75rem;
+    font-family: var(--font-poppins);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--black);
+  }
+
+  p {
+    color: var(--gray-dark);
+    line-height: 1.5;
+  }
+
+  div {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem
+  }
+}

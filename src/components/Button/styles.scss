@@ -1,0 +1,52 @@
+.button {
+  border-radius: 0.5rem;
+  font-weight: 500;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: filter 0.2s;
+
+  &:not(.outline-small) {
+    padding: 0 2rem;
+    height: 3.125rem;
+    border: 0;
+  }
+
+  &.default {
+    background: var(--purple);
+    color: var(--white);
+  }
+
+  &.outline-small {
+    padding: 0 1.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--purple);
+    color: var(--purple);
+    background: transparent;
+  }
+
+  &.danger {
+    background: var(--danger);
+    color: var(--white);
+  }
+
+  &.neutral {
+    background: var(--gray-light);
+    color: var(--gray-dark);
+  }
+
+  img {
+    margin-right: 0.5rem;
+  }
+
+  &:not(:disabled):hover {
+    filter: brightness(0.9);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

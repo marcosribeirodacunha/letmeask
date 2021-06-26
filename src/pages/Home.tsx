@@ -15,7 +15,6 @@ import toast from 'react-hot-toast'
 
 export function Home() {
   const [roomCode, setRoomCode] = useState('')
-
   const history = useHistory()
   const { user, signInWithGoogle } = useAuth()
 
@@ -37,6 +36,11 @@ export function Home() {
     if (!roomRef.exists()) {
       toast.error('Room does not exists.')
       return
+    }
+
+    if (roomRef.val().endedAt) {
+      toast.error('Room already closed.')
+      return;
     }
 
     history.push(`/rooms/${roomCode}`)

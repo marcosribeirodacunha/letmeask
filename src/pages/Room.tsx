@@ -1,73 +1,32 @@
-import { useEffect } from 'react'
 import { FormEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
 
 import logoImg from '../assets/images/logo.svg'
+import emptyQuestionsImg from '../assets/images/empty-questions.svg'
+import { ReactComponent as LikeIcon } from '../assets/images/like.svg'
 
 import { Button } from '../components/Button'
+import { Question } from '../components/Questions'
 import { RoomCode } from '../components/RoomCode'
+
 import { useAuth } from '../contexts/AuthContext'
+import { useRoom } from '../hooks/useRoom'
+
 import { database } from '../services/firebase'
 
 import '../styles/room.scss'
-
-type Question = {
-  id: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-  content: string;
-  isHighlighted: boolean;
-  isAnswered: boolean;
-}
 
 type RoomParams = {
   id: string;
 }
 
-type FirebaseQuestions = Record<string, {
-  author: {
-    name: string;
-    avatar: string;
-  };
-  content: string;
-  isHighlighted: boolean;
-  isAnswered: boolean;
-}>
-
 export function Room() {
   const [newQuestion, setNewQuestion] = useState('')
-  const [questions, setQuestions] = useState<Question[]>([])
-  const [title, setTitle] = useState('')
 
-
-  const { user } = useAuth()
   const { id: roomId } = useParams<RoomParams>()
-
-  useEffect(() => {
-    const roomRef = database.ref(`rooms/${roomId}`);
-
-    roomRef.on('value', room => {
-      const databaseRoom = room.val();
-      const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
-
-      const parsedQuestions = Object.entries(firebaseQuestions).map(([key, value]) => {
-        return {
-          id: key,
-          content: value.content,
-          author: value.author,
-          isHighlighted: value.isHighlighted,
-          isAnswered: value.isAnswered,
-        }
-      })
-
-      setQuestions(parsedQuestions)
-      setTitle(databaseRoom.title)
-    })
-
-  }, [roomId])
+  const { user } = useAuth()
+  const { questions, title } = useRoom(roomId)
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
@@ -93,6 +52,18 @@ export function Room() {
 
     setNewQuestion('')
 
+  }
+
+  async function handleLikeQuestion(questionId: string, likeId?: string) {
+    if (likeId) {
+      await database
+        .ref(`rooms/${roomId}/questions/${questionId}/likes/${likeId}`)
+        .remove()
+    } else {
+      await database.ref(`rooms/${roomId}/questions/${questionId}/likes`).push({
+        authorId: user?.id,
+      })
+    }
   }
 
   return (
@@ -132,7 +103,33 @@ export function Room() {
           </div>
         </form>
 
-        {JSON.stringify(questions)}
+        {questions.length > 0 ? (
+          <div className="question-list">
+            {questions.map(question => (
+              <Question
+                key={question.id}
+                content={question.content}
+                author={question.author}
+              >
+                <button
+                  type='button'
+                  className={`like-button ${question.likeId ? 'liked' : ''}`}
+                  aria-label="Marcar como gostei"
+                  onClick={() => handleLikeQuestion(question.id, question.likeId)}
+                >
+                  {question.likeCount > 0 && <span>{question.likeCount}</span>}
+                  <LikeIcon />
+                </button>
+              </Question>
+            ))}
+          </div>
+        ) : (
+          <div className="empty-questions">
+            <img src={emptyQuestionsImg} alt="Ilustração de balões de mensagem" />
+            <h2>Nenhuma pergunta por aqui...</h2>
+            <p>Faça o seu login e seja a primeira pessoa a fazer uma pergunta!</p>
+          </div>
+        )}
       </main>
     </div>
   )

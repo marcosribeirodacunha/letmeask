@@ -1,4 +1,6 @@
 #page-room {
+  padding-bottom: 4rem;
+
   header {
     padding: 1.5rem;
     border-bottom: 1px solid #e2e2e2;
@@ -12,6 +14,11 @@
 
       > img {
         max-height: 2.8125rem; //? 45px
+      }
+
+      > div {
+        display: flex;
+        gap: 1rem;
       }
     }
   }
@@ -98,6 +105,30 @@
             font-weight: inherit;
           }
         }
+      }
+    }
+
+    .question-list {
+      margin-top: 2rem;
+    }
+
+    .empty-questions {
+      max-width: 18rem;
+      margin: 4rem auto 0;
+      text-align: center;
+
+      h2 {
+        font-family: var(--font-poppins);
+        color: var(--black);
+        font-weight: 700;
+        font-size: 1.125rem;
+        margin: 1rem 0 0.5rem;
+      }
+
+      p {
+        font-size: 0.875rem;
+        color: var(--gray-dark);
+        line-height: 1.5;
       }
     }
   }
