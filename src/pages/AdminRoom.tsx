@@ -4,6 +4,8 @@ import toast from 'react-hot-toast'
 
 import logoImg from '../assets/images/logo.svg'
 import emptyQuestionsImg from '../assets/images/empty-questions.svg'
+import { ReactComponent as CheckIcon } from '../assets/images/check.svg'
+import { ReactComponent as AnswerIcon } from '../assets/images/answer.svg'
 import { ReactComponent as DeleteIcon } from '../assets/images/delete.svg'
 import { ReactComponent as CircleCloseIcon } from '../assets/images/circle-close.svg'
 
@@ -55,6 +57,18 @@ export function AdminRoom() {
     }
   }
 
+  async function handleCheckQuestionsAsAnswered(questionId: string) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isAnswered: true
+    });
+  }
+
+  async function handleHighlightQuestion(questionId: string) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isHighlighted: true
+    });
+  }
+
   return (
     <div id="page-room">
       <header>
@@ -87,10 +101,32 @@ export function AdminRoom() {
                 key={question.id}
                 content={question.content}
                 author={question.author}
+                isAnswered={question.isAnswered}
+                isHighlighted={question.isHighlighted}
               >
+                {question.isAnswered || (
+                  <>
+                    <button
+                      type='button'
+                      title='Check message as answered'
+                      onClick={() => handleCheckQuestionsAsAnswered(question.id)}>
+                      <CheckIcon />
+                    </button>
+
+                    <button
+                      type='button'
+                      title='Highlight message'
+                      onClick={() => handleHighlightQuestion(question.id)}
+                    >
+                      <AnswerIcon />
+                    </button>
+                  </>
+                )}
+
                 <button
                   type='button'
                   className='delete'
+                  title='Delete message'
                   onClick={() => {
                     setIsDeleteModalOpen(true)
                     setQuestionToDelete(index)

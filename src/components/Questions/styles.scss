@@ -3,9 +3,29 @@
   border-radius: 0.8rem;
   box-shadow: 0 2px 12px rgba(0, 0 ,0 ,0.05);
   padding: 1.5rem;
+  border: 1px solid transparent; 
+  transition: background-color 0.2s, border-color 0.2s;
 
   & + .question {
     margin-top: 0.5rem;
+  }
+
+  &.answered {
+    background: var(--gray-light);
+
+    footer .user-info img {
+      transition: filter 0.2s;
+      filter: saturate(0);
+    }
+  }
+
+  &.highlighted {
+    background: #f4f0ff;
+    border-color: var(--purple);
+
+    footer .user-info span {
+      color: var(--black);
+    }
   }
 
   p {
@@ -33,6 +53,11 @@
         color: var(--gray-dark);
         font-size: 0.875rem;
       }
+    }
+
+    > div:last-of-type {
+      display: flex;
+      gap: 1rem;
     }
 
     button {
